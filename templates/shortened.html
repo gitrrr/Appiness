@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script></head>
+<body style="background-color:#00ee5891;width:100%;height:100%" onload="getShortenedLinks()">
+<script type="text/javascript">
+  function getShortenedLinks(){
+    console.log("Get Shortened Links Entering..........");
+    $.ajax({
+      type: "GET",
+      url: "http://192.168.43.67:2020/shortenedLinks",
+      async: false,
+      contentType: "application/json",
+      crossDomain: true,
+      datatype: "json",
+      success: function(response) {
+          console.log("response-----------"+ JSON.stringify(response));
+          var short_link="";
+          var shortened_links = response['shortened_links'];
+          var original_links = response['original_links'];
+          console.log("shortenedLinks::"+shortened_links);
+          for (var i=0;i<shortened_links.length;i++){
+            //alert(shortened_links[i]);
+            var all_links = '<center>'+'<a href="'+original_links[i]+'" target="_blank">'+shortened_links[i]+'</a>'
+            //alert("all_links" +all_links);
+            short_link +="<br> "+all_links+'</center>'
+            //alert("short_link "+short_link);
+            document.getElementById("demo").innerHTML = short_link ;
+          }
+      },
+      error: function(response) {
+          console.log("AJAX error in request:: " + JSON.stringify(response, null, 2));
+        }
+    });
+  }
+</script>
+<center>
+<h1>Shortened URLS</h1>
+</center>
+<div>
+<dev id="demo"></dev>
+</div>
+</body>
+</html>
